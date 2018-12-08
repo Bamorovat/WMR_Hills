@@ -1,0 +1,14 @@
+byte RES_1
+byte RES_2
+byte RES_3
+byte RES_4
+byte RES_5
+byte RES_6
+byte RES_7
+byte RES_8
+byte RES_9
+float32 Result_Teta
+float32 Result_X
+float32 Result_Y
+float32 Speed_Motor_R
+float32 Speed_Motor_L
