@@ -369,4 +369,3 @@ bool wmr_udp_communication::Motor_CMD(wmr_robot::Motor_cmd &Motor_cmd_BUFFER,int
     close(sd);
     return true;
 }
-
