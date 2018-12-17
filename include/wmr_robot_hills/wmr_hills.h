@@ -33,10 +33,12 @@
 
 typedef uint8_t Byte;
 
+union float2byte{
+    float float_;
+    u_char byte[4];
+};
 
-//namespace wmr{
 class wmr_robot{
-
 public:
 
     // #pragma pack(push, 1) // exact fit - no padding
@@ -76,7 +78,6 @@ public:
         Byte IR_Sharp_15;
         Byte IR_Sharp_16;
     };
-
     //  #pragma pack(pop) //back to whatever the previous packing mode was
 
 
@@ -112,11 +113,35 @@ public:
         Byte RES_7;
         Byte RES_8;
         Byte RES_9;
+        Byte RES_10;
+        Byte T_1;
+        Byte T_2;
+        Byte T_3;
+        Byte T_4;
+        Byte x_1;
+        Byte x_2;
+        Byte x_3;
+        Byte x_4;
+        Byte y_1;
+        Byte y_2;
+        Byte y_3;
+        Byte y_4;
+        Byte s_r_1;
+        Byte s_r_2;
+        Byte s_r_3;
+        Byte s_r_4;
+        Byte s_l_1;
+        Byte s_l_2;
+        Byte s_l_3;
+        Byte s_l_4;
+
+        /*
         float Result_Teta;
         float Result_X;
         float Result_Y;
         float Speed_Motor_R;
         float Speed_Motor_L;
+        */
     };
     //  #pragma pack(pop) //back to whatever the previous packing mode was
 
@@ -136,19 +161,16 @@ public:
     };
     //  #pragma pack(pop) //back to whatever the previous packing mode was
 
-
-
     // #pragma pack(push, 1) // exact fit - no padding
     struct __attribute__((packed))Movement_cmd{
 
         public:
         const Byte Mode = 0x04;
        // Byte Mode;
-        float Velocity_Y;
-        float Velocity_W;
+        float Linear_Velocity;
+        float Angular_Velocity;
     };
     //  #pragma pack(pop) //back to whatever the previous packing mode was
-
 
     // #pragma pack(push, 1) // exact fit - no padding
     struct __attribute__((packed))Motor_cmd{
@@ -161,7 +183,6 @@ public:
         uint16_t SpeedL; //1-1700;
     };
   //  #pragma pack(pop) //back to whatever the previous packing mode was
-
 
 public:
 
@@ -176,13 +197,9 @@ public:
     void PID(PID_DATA &PID_Data_Buffer, int PID_Data_Buffer_Size);
     void Odometry(Odometery_DATA &Odometery_DATA_Buffer,int Odometery_DATA_Buffer_Size);
     void Movement(Movement_DATA &Movement_DATA_Buffer,int Movement_DATA_Buffer_Size);
-    void Movement_Command(float Angular_velocity,float Linear_Velocity);
+    void Movement_Command(float linear_velocity, float angular_velocity);
     void Motor_Command(Byte mode, Byte Dir_Right, Byte Dir_Left, uint16_t Speed_Right, uint16_t Speed_Left);
 
-
-
 };
-//}
-
 
 #endif // WMR_HILLS
