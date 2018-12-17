@@ -31,18 +31,16 @@
 #include <stdint.h>
 
 typedef uint8_t Byte;
-//Byte value;
 
 class wmr_udp_communication{
-
 protected:
 
-    #define Sensors_Data_Port 5002   //Robot to Pc
-    #define PID_Data_Port 10121      //Robot to Pc
-    #define Odometery_Data_Port 5003 //Robot to Pc
-    #define Movement_Data_Port 3023  //Robot to Pc
-    #define Movement_CMD_Port 6000   //PC to Robot
-    #define Motor_Command_Port 2222  //PC to Robot
+    #define Sensors_Data_Port   5002   //Robot to Pc
+    #define PID_Data_Port       10121  //Robot to Pc
+    #define Odometery_Data_Port 5003   //Robot to Pc
+    #define Movement_Data_Port  3023   //Robot to Pc
+    #define Movement_CMD_Port   6000   //PC to Robot
+    #define Motor_Command_Port  2222   //PC to Robot
 
 public:
 
@@ -50,8 +48,6 @@ public:
     #define COLS 2
 
     float angle;
- //   float Ir_Sensor [16][2];
- //   float Ultrasonic_Sensor [16][2];
     static const int Ir_Sensor_Num = 16;
     static const int Ultrasonic_Sensor_Num = 16;
     Byte value;
@@ -68,7 +64,6 @@ public:
     void sharpsensor(char *bufptr, float (&ir_Sensor)[ROWS][COLS]);
     void ultrasonicsensor(char *bufptr, float (&Ultrasonic_Sensor)[ROWS][COLS]);
 };
-
 
 #endif // WMR_UDP_COMMUNICATION
 
