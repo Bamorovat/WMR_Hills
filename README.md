@@ -1,5 +1,5 @@
-# wmr_robot_Hills
-## SOSCO's Mobile Robot ROS Node (WMR_robot_Hills)
+# wmr_robot_hills
+## SOSCO's Mobile Robot ROS Node (WMR_Robot_Hills)
 ## Author: [Mohammad Hossein Bamorovat Abadi](https://bamorovat.wordpress.com/).
 
 This code implemented with C++ programing Language.
