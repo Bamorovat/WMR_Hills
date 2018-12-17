@@ -47,7 +47,98 @@ wmr_robot WMR_Robot;
 wmr_udp_communication wmr_udp1;
 wmr_robot_ros WMR_ROBOT_ROS;
 
-float X,Y,th;
+float Result_Teta,Result_X,Result_Y,linear_x,angular_z;
+double X,Y,th;
+u_char IR_Sharp_Sensor[16];
+u_char Sonar_Sensor[16];
+
+void Odo(){
+    wmr_robot::Odometery_DATA Odometry_Data_Buffer;
+    int Odometry_Data_Buffer_Size = sizeof(Odometry_Data_Buffer);
+    WMR_Robot.Odometry(Odometry_Data_Buffer,Odometry_Data_Buffer_Size);
+
+  //   Result_Teta;
+    float2byte cast_float;
+    cast_float.byte[0] = Odometry_Data_Buffer.T_1;
+    cast_float.byte[1] = Odometry_Data_Buffer.T_2;
+    cast_float.byte[2] = Odometry_Data_Buffer.T_3;
+    cast_float.byte[3] = Odometry_Data_Buffer.T_4;
+    Result_Teta = cast_float.float_;
+
+ //    Result_X;
+    float2byte cast_float1;
+    cast_float1.byte[0] = Odometry_Data_Buffer.x_1;
+    cast_float1.byte[1] = Odometry_Data_Buffer.x_2;
+    cast_float1.byte[2] = Odometry_Data_Buffer.x_3;
+    cast_float1.byte[3] = Odometry_Data_Buffer.x_4;
+    Result_X = cast_float1.float_;
+
+ //   Result_Y;
+    float2byte cast_float2;
+    cast_float2.byte[0] = Odometry_Data_Buffer.y_1;
+    cast_float2.byte[1] = Odometry_Data_Buffer.y_2;
+    cast_float2.byte[2] = Odometry_Data_Buffer.y_3;
+    cast_float2.byte[3] = Odometry_Data_Buffer.y_4;
+    Result_Y = cast_float2.float_;
+
+  //  linear_x;
+    float2byte cast_float3;
+    cast_float3.byte[0] = Odometry_Data_Buffer.s_r_1;
+    cast_float3.byte[1] = Odometry_Data_Buffer.s_r_2;
+    cast_float3.byte[2] = Odometry_Data_Buffer.s_r_3;
+    cast_float3.byte[3] = Odometry_Data_Buffer.s_r_4;
+    linear_x = cast_float3.float_;
+
+ //   angular_z;
+    float2byte cast_float4;
+    cast_float4.byte[0] = Odometry_Data_Buffer.s_l_1;
+    cast_float4.byte[1] = Odometry_Data_Buffer.s_l_2;
+    cast_float4.byte[2] = Odometry_Data_Buffer.s_l_3;
+    cast_float4.byte[3] = Odometry_Data_Buffer.s_l_4;
+    angular_z = cast_float4.float_;
+}
+
+void Sensor()
+{
+    wmr_robot::Sensor_DATA Sensor_DATA_Buffer;
+    int Sensor_DATA_Buffer_Size = sizeof(Sensor_DATA_Buffer);
+    wmr_udp1.Sensor_Status(Sensor_DATA_Buffer,Sensor_DATA_Buffer_Size);
+
+    IR_Sharp_Sensor[0] = Sensor_DATA_Buffer.IR_Sharp_1;
+    IR_Sharp_Sensor[1] = Sensor_DATA_Buffer.IR_Sharp_2;
+    IR_Sharp_Sensor[2] = Sensor_DATA_Buffer.IR_Sharp_3;
+    IR_Sharp_Sensor[3] = Sensor_DATA_Buffer.IR_Sharp_4;
+    IR_Sharp_Sensor[4] = Sensor_DATA_Buffer.IR_Sharp_5;
+    IR_Sharp_Sensor[5] = Sensor_DATA_Buffer.IR_Sharp_6;
+    IR_Sharp_Sensor[6] = Sensor_DATA_Buffer.IR_Sharp_7;
+    IR_Sharp_Sensor[7] = Sensor_DATA_Buffer.IR_Sharp_8;
+    IR_Sharp_Sensor[8] = Sensor_DATA_Buffer.IR_Sharp_9;
+    IR_Sharp_Sensor[9] = Sensor_DATA_Buffer.IR_Sharp_10;
+    IR_Sharp_Sensor[10] = Sensor_DATA_Buffer.IR_Sharp_11;
+    IR_Sharp_Sensor[11] = Sensor_DATA_Buffer.IR_Sharp_12;
+    IR_Sharp_Sensor[12] = Sensor_DATA_Buffer.IR_Sharp_13;
+    IR_Sharp_Sensor[13] = Sensor_DATA_Buffer.IR_Sharp_14;
+    IR_Sharp_Sensor[14] = Sensor_DATA_Buffer.IR_Sharp_15;
+    IR_Sharp_Sensor[15] = Sensor_DATA_Buffer.IR_Sharp_16;
+
+    Sonar_Sensor[0] = Sensor_DATA_Buffer.Ultrasonic_1;
+    Sonar_Sensor[1] = Sensor_DATA_Buffer.Ultrasonic_2;
+    Sonar_Sensor[2] = Sensor_DATA_Buffer.Ultrasonic_3;
+    Sonar_Sensor[3] = Sensor_DATA_Buffer.Ultrasonic_4;
+    Sonar_Sensor[4] = Sensor_DATA_Buffer.Ultrasonic_5;
+    Sonar_Sensor[5] = Sensor_DATA_Buffer.Ultrasonic_6;
+    Sonar_Sensor[6] = Sensor_DATA_Buffer.Ultrasonic_7;
+    Sonar_Sensor[7] = Sensor_DATA_Buffer.Ultrasonic_8;
+    Sonar_Sensor[8] = Sensor_DATA_Buffer.Ultrasonic_9;
+    Sonar_Sensor[9] = Sensor_DATA_Buffer.Ultrasonic_10;
+    Sonar_Sensor[10] = Sensor_DATA_Buffer.Ultrasonic_11;
+    Sonar_Sensor[11] = Sensor_DATA_Buffer.Ultrasonic_12;
+    Sonar_Sensor[12] = Sensor_DATA_Buffer.Ultrasonic_13;
+    Sonar_Sensor[13] = Sensor_DATA_Buffer.Ultrasonic_14;
+    Sonar_Sensor[14] = Sensor_DATA_Buffer.Ultrasonic_15;
+    Sonar_Sensor[15] = Sensor_DATA_Buffer.Ultrasonic_16;
+
+}
 
 void callbak_move_cmd(const geometry_msgs::Twist::ConstPtr& msg)    // <<<<<<<<<<<<<<<<<<<<< cmd_vel Function >>>>>>>>>>>>>>>>>>>>> //
 {
@@ -73,25 +164,19 @@ void callback_motor_cmd(const wmr_robot_hills::motor_cmd& msg)      // <<<<<<<<<
 
 void wmr_robot_ros::odometry_node()             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ODOMETRY ROS NODE FUNCTION >>>>>>>>>>>>>>>>>>>>>>>>>> //
 {
-    wmr_robot::Odometery_DATA Odometry_Data_Buffer;
-    int Odometry_Data_Buffer_Size = sizeof(Odometry_Data_Buffer);
-    WMR_Robot.Odometry(Odometry_Data_Buffer,Odometry_Data_Buffer_Size);
 
     ros::Time current_time, last_time;
     current_time = ros::Time::now();
-    last_time = ros::Time::now();
 
-
-    X += Odometry_Data_Buffer.Result_X;
-    Y += Odometry_Data_Buffer.Result_Y;
-    th += Odometry_Data_Buffer.Result_Teta;
-
+    Odo(); // Geting Odometry Data From Socket
+    X += Result_X;
+    Y += Result_Y;
+    th += Result_Teta;
 
      tf::TransformBroadcaster broadcaster;
 
     //since all odometry is 6DOF we'll need a quaternion created from yaw
-     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(Odometry_Data_Buffer.Result_Teta);
- //    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
+     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(Result_Teta);
 
      //first, we'll publish the transform over tf
      geometry_msgs::TransformStamped odom_trans;
@@ -99,10 +184,8 @@ void wmr_robot_ros::odometry_node()             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      odom_trans.header.frame_id = "odom";
      odom_trans.child_frame_id = "base_link";
 
-     odom_trans.transform.translation.x = Odometry_Data_Buffer.Result_X;
-     odom_trans.transform.translation.y = Odometry_Data_Buffer.Result_Y;
-//     odom_trans.transform.translation.x = X;
-//     odom_trans.transform.translation.y = Y;
+     odom_trans.transform.translation.x = X;
+     odom_trans.transform.translation.y = Y;
      odom_trans.transform.translation.z = 0.0;
      odom_trans.transform.rotation = odom_quat;
 
@@ -127,30 +210,21 @@ void wmr_robot_ros::odometry_node()             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      odom.header.frame_id = "odom";
 
      //set the position
-     odom.pose.pose.position.x += Odometry_Data_Buffer.Result_X;
-     odom.pose.pose.position.y += Odometry_Data_Buffer.Result_Y;
- //    odom.pose.pose.position.x = X;
- //    odom.pose.pose.position.y = Y;
+     odom.pose.pose.position.x = X;
+     odom.pose.pose.position.y = Y;
      odom.pose.pose.position.z = 0.0;
      odom.pose.pose.orientation = odom_quat;
 
      //set the velocity
      odom.child_frame_id = "base_link";
-     odom.twist.twist.linear.x  = move_cmd.linear.x;
-     odom.twist.twist.linear.y  = 0;
-     odom.twist.twist.linear.z  = 0;
-     odom.twist.twist.angular.x = 0;
-     odom.twist.twist.angular.y = 0;
-     odom.twist.twist.angular.z = move_cmd.angular.z;
+     odom.twist.twist.linear.x  =linear_x;
+     odom.twist.twist.angular.z =angular_z;
 
-     tf::poseTFToMsg(tf::Transform(tf::createQuaternionFromYaw(Odometry_Data_Buffer.Result_Teta), tf::Vector3(Odometry_Data_Buffer.Result_X,Odometry_Data_Buffer.Result_Y, 0)), odom.pose.pose);
-//     tf::poseTFToMsg(tf::Transform(tf::createQuaternionFromYaw(th), tf::Vector3(X,Y, 0)), odom.pose.pose);
+     tf::poseTFToMsg(tf::Transform(tf::createQuaternionFromYaw(th), tf::Vector3(X,Y, 0)), odom.pose.pose);
      //publish the message
      WMR_ROBOT_ROS.odometry_Data_Pub.publish(odom);
 
      last_time = current_time;
-
-
     }
 
 void wmr_robot_ros::pid_node()                     // <<<<<<<<<<<<<<<<<<<<<<<<< PID ROS NODE FUNCTION >>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -201,19 +275,14 @@ void wmr_robot_ros::movement_node()
 
 void wmr_robot_ros::sensor_node()               // <<<<<<<<<<<<<<<<<<<< SENSOR ROS NODE FUNCTION >>>>>>>>>>>>>>>>>>>>> //
 {
-
-    float ultrasonic[16][2];
-    float ir[16][2];
-    wmr_udp1.Sensor_Status_diff(ultrasonic,ir);
+    Sensor(); // Getting Sensors Data From Socket
 
     sensor_msgs::PointCloud pointCloud1;
     pointCloud1.header.stamp = ros::Time::now();
     pointCloud1.header.frame_id = "ir_link";
-    for(int i=1; i<=WMR_ROBOT_ROS.Ir_Sensor_Num; i++) {
+    for(int i=0; i<=15; i++) {
         geometry_msgs::Point32 p;
-        p.x = ir[i][1];
-        p.y = ir[i][2];
-        p.z = 0;
+        p.x = IR_Sharp_Sensor[i];
         pointCloud1.points.push_back(p);
     }
     WMR_ROBOT_ROS.IR_Sharp_Pub.publish(pointCloud1);
@@ -221,11 +290,9 @@ void wmr_robot_ros::sensor_node()               // <<<<<<<<<<<<<<<<<<<< SENSOR R
     sensor_msgs::PointCloud pointCloud2;
     pointCloud2.header.stamp = ros::Time::now();
     pointCloud2.header.frame_id = "sonar_link";
-    for(int i=1; i<=WMR_ROBOT_ROS.Ultrasonic_Sensor_Num; i++) {
+    for(int i=0; i<=15; i++) {
         geometry_msgs::Point32 p;
-        p.x = ultrasonic[i][1];
-        p.y = ultrasonic[i][2];
-        p.z = 0;
+        p.x =  Sonar_Sensor[i];
         pointCloud2.points.push_back(p);
     }
     WMR_ROBOT_ROS.Sonar_Pub.publish(pointCloud2);
@@ -235,6 +302,7 @@ int main(int argc, char** argv)                 // <<<<<<<<<<<<<<<<< MAIN FUNCTI
 {
     ros::init(argc, argv, "wmr_hills_ros");
     ros::NodeHandle n;
+    tf::TransformBroadcaster broadcaster;
 
     ROS_INFO_STREAM(" .......... Connecting to robot ..........\n"
                     " Robot ip address: "<<"192.168.1.1"<<"\n"<<
@@ -250,8 +318,8 @@ int main(int argc, char** argv)                 // <<<<<<<<<<<<<<<<< MAIN FUNCTI
     WMR_ROBOT_ROS.PID_Data_Pub      = n.advertise<wmr_robot_hills::pid_data>("/pid",50);
     WMR_ROBOT_ROS.Movement_data_Pub = n.advertise<wmr_robot_hills::movement_data>("/movement",50);
     WMR_ROBOT_ROS.odometry_Data_Pub = n.advertise<nav_msgs::Odometry>("/odometry",50);
-    WMR_ROBOT_ROS.Sonar_Pub         = n.advertise<sensor_msgs::PointCloud>("/sonar",50);;
-    WMR_ROBOT_ROS.IR_Sharp_Pub      = n.advertise<sensor_msgs::PointCloud>("/ir",50);;
+    WMR_ROBOT_ROS.Sonar_Pub         = n.advertise<sensor_msgs::PointCloud>("/sonar",50);
+    WMR_ROBOT_ROS.IR_Sharp_Pub      = n.advertise<sensor_msgs::PointCloud>("/ir",50);
 
     bool init_ok;
     init_ok = WMR_Robot.init();
