@@ -62,8 +62,8 @@ bool wmr_robot::init() // init - Primiry test & setting
 {           
     wmr_robot::Movement_cmd Movement_cmd_BUFFER;
 //  Movement_cmd_BUFFER.Mode = 0x04;
-    Movement_cmd_BUFFER.Velocity_Y= 0.0;
-    Movement_cmd_BUFFER.Velocity_W= 0.0;
+    Movement_cmd_BUFFER.Linear_Velocity= 0.0;
+    Movement_cmd_BUFFER.Angular_Velocity= 0.0;
     int Movement_cmd_BUFFER_Size = sizeof(Movement_cmd_BUFFER);
     ini_ok = wmr_udp.Movement_CMD(Movement_cmd_BUFFER,Movement_cmd_BUFFER_Size);
 
@@ -113,12 +113,13 @@ void wmr_robot::Movement(wmr_robot::Movement_DATA &Movement_DATA_Buffer,int Move
     Movement_Ok = wmr_udp.Movement_Data(Movement_DATA_Buffer,Movement_DATA_Buffer_Size);
 }
 
-void wmr_robot::Movement_Command(float Angular_velocity,float Linear_Velocity)
+void wmr_robot::Movement_Command(float linear_velocity, float angular_velocity)
 {
     wmr_robot::Movement_cmd Movement_cmd_BUFFER;
 //  Movement_cmd_BUFFER.Mode = 0x04;
-    Movement_cmd_BUFFER.Velocity_Y= Angular_velocity;
-    Movement_cmd_BUFFER.Velocity_W= Linear_Velocity;
+    Movement_cmd_BUFFER.Linear_Velocity= linear_velocity;
+    Movement_cmd_BUFFER.Angular_Velocity= angular_velocity;
+
     int Movement_cmd_BUFFER_Size = sizeof(Movement_cmd_BUFFER);
     Move_Cmd_Ok=wmr_udp.Movement_CMD(Movement_cmd_BUFFER,Movement_cmd_BUFFER_Size);
 }
@@ -134,10 +135,3 @@ void wmr_robot::Motor_Command(Byte mode, Byte Dir_Right, Byte Dir_Left, uint16_t
     int Motor_cmd_BUFFER_Size = sizeof(Motor_cmd_BUFFER);
     Motor_Ok=wmr_udp.Motor_CMD(Motor_cmd_BUFFER,Motor_cmd_BUFFER_Size);
 }
-
-
-
-
-
-
-
