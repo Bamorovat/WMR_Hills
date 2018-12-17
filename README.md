@@ -1,6 +1,6 @@
 # wmr_robot_Hills
 ## SOSCO's Mobile Robot ROS Node (WMR_robot_Hills)
-### Author: [Mohammad Hossein Bamorovat Abadi](https://bamorovat.wordpress.com/).
+## Author: [Mohammad Hossein Bamorovat Abadi](https://bamorovat.wordpress.com/).
 
 This code implemented with C++ programing Language.
 This package implemented in **ROS environment**.
@@ -10,13 +10,13 @@ This Project use **UDP Communication Protocol** to tranfare data between compute
 We have tested **wmr_robot_Hills in Ubuntu 18.04 with ROS Melodic and Ubuntu 16.04 with ROS Kinetic**. If you do not have already installed ROS in your computer, we recommend you to install the Full-Desktop version of ROS Melodic: (http://wiki.ros.org/melodic/Installation/Ubuntu).
 
 # Installation
-Download and copy the wmr_robot_Hills file at to catkin workspace/src (**Note: Remove "-master" from the end of the file**):
+Download and copy the wmr_robot_hills file at to catkin workspace/src (**Note: Remove "-master" from the end of the file**):
 
     cd catkin_ws/src
 
 go to wmr_robot_Hills pakage and run codes below at ubuntu terminal:
 
-    cd catkin_ws/src/wmr_robot_Hills
+    cd catkin_ws/src/wmr_robot_hills
     mkdir build
     cd build
     cmake ..
@@ -29,4 +29,4 @@ Befor run the package, we should Knowing the new package :
     
 Run the package:
 
-    rosrun wmr_robot_Hills wmr_robot_Hills
+    rosrun wmr_robot_hills wmr_robot_hills
