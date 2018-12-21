@@ -14,7 +14,7 @@ Download and copy the wmr_robot_hills file at to catkin workspace/src (**Note: R
 
     cd catkin_ws/src
 
-go to wmr_robot_Hills pakage and run codes below at ubuntu terminal:
+go to wmr_robot_hills pakage and run codes below at ubuntu terminal:
 
     cd catkin_ws/src/wmr_robot_hills
     mkdir build
