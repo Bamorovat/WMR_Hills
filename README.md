@@ -1,6 +1,6 @@
 # wmr_robot_hills
 ## SOSCO's Mobile Robot ROS Node (WMR_Robot_Hills)
-## Author: [Mohammad Hossein Bamorovat Abadi](https://bamorovat.wordpress.com/).
+## Author: [Mohammad Hossein Bamorovat Abadi](https://www.linkedin.com/in/mohammad-hossein-bamorovat-abadi-92635839/).
 
 This code implemented with C++ programing Language.
 This package implemented in **ROS environment**.
